@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import Header from '../../components/header';
+import RepoCard from '../../components/repoCard';
 import github from '../../apis/github';
 
+import { GridLayout } from './publicRepos-styled';
 
 const PublicRepos = props => {
     const { handle } = props.match.params;
@@ -24,19 +27,17 @@ const PublicRepos = props => {
         }
     }
     
-const publicReposToShow = results.map( (item) => {
-    console.log(item);
-    return (
-        <div key={item.id}>
-            <h3>{item.name}</h3>
-            <h5>Number of stars: {item.stargazers_count}</h5>
-            <p>{item.description}</p>
-        </div>);
+    const publicReposToShow = results.map( (item, index) => {
+        return <RepoCard key={index} data={item} />
     });
+
     return (
-        <div style={{maxWidth: 920,margin: '0 auto'}}>
-            {contentToShow()}
-        </div>
+        <>
+            <Header>Public Repository for&nbsp;<strong>{handle}</strong></Header>
+            <GridLayout>
+                {contentToShow()}
+            </GridLayout>
+        </>
     );
 }
 
