@@ -6,16 +6,16 @@ import { quicksort } from './repoList-container';
 
 import { GridLayout } from './repoList-styled';
 
-let results = [];
-
 const RepoList = props => {
+    const handle = props.handle;
+    const [results, setResults] = useState([]);
     const [newResults, setNewResults] = useState([]);
 
     useEffect(() => {
         const search = async () => {
-            const { data } = await github.get(`/${props.handle}/repos`);
+            const { data } = await github.get(`/${handle}/repos`);
             let sortData = quicksort(data);
-            results = [...sortData];
+            setResults(sortData);
             setNewResults(sortData);
         };
         search();
@@ -25,7 +25,7 @@ const RepoList = props => {
         if (newResults.length) {
             return publicReposToShow;
         } else {
-            return <h2>No public repos!!!</h2>;
+            return <h2>No public repository!!!</h2>;
         }
     }
 

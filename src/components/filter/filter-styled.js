@@ -12,3 +12,16 @@ export const FilterContainer = styled.div`
     max-width: 920px;
     margin: 0 auto;
 `;
+
+export const FilterError = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+`;
+
+export const FilterErrorText = styled.div`
+    margin-left: 10px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: red;
+`;

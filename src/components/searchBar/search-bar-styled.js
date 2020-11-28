@@ -9,12 +9,10 @@ export const FormFieldset = styled.div`
     width: 100%;
 `;
 
-
 export const FormError = styled.div`
     font-size: 13px;
     line-height: 1.2;
     color: red;
-
 `;
 
 export const FormInput = styled.input`

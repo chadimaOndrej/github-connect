@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import FormInput from '../../ui/formInput';
 import FormCheckbox from '../../ui/formCheckbox';
 
-import { FilterBar, FilterContainer } from './filter-styled';
+import { FilterBar, FilterContainer, FilterError, FilterErrorText } from './filter-styled';
 
 const Filter = ({results, newResults, filteredResult}) => {
     const [term, setTerm] = useState('');
     const [debouncedTerm, setDebouncedTerm] = useState(term);
     const [sortType, setSortType] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const timerId = setTimeout(() => {
@@ -22,7 +23,7 @@ const Filter = ({results, newResults, filteredResult}) => {
     useEffect(() => {
         let filteredItems = [];
         for( let item of results) {
-            if (item.name.toLowerCase().search(debouncedTerm) != '-1') {
+            if (item.name.toLowerCase().search(debouncedTerm) !== -1) {
                 filteredItems.push(item);
             }
         }
@@ -35,13 +36,26 @@ const Filter = ({results, newResults, filteredResult}) => {
         filteredResult(reverseResults.reverse());
     }, [sortType]);
 
+    const validateText = values => {
+        if (/[^A-Za-z0-9_-]+/i.test(values)){
+            setError('No allowed characters');
+        } else {
+            setTerm(values);
+            if (error.length) setError('');
+        }
+    };
+
     return (
         <FilterBar>
             <FilterContainer>
-                <FormInput 
-                    name="findRepos" 
-                    onInputChange={e => setTerm(e.target.value)} 
-                />
+                <FilterError>
+                    <FormInput 
+                        name="findRepos" 
+                        placeholder="Find repository"
+                        onInputChange={e => validateText(e.target.value)}
+                    />
+                    {error ? <FilterErrorText>{error}</FilterErrorText> : null}
+                </FilterError>
                 <FormCheckbox 
                     name="stargazers_sort" 
                     label="Lowest stargazers count"

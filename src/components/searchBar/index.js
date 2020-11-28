@@ -6,8 +6,10 @@ const validate = values => {
     const errors = {};
     if (!values.userName) {
         errors.userName = 'Required';
-    } else if (values.userName.length > 20) {
-        errors.userName = 'Must be 20 characters or less';
+    } else if (!/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(values.userName)){
+        errors.userName = 'No allowed characters';
+    } else if (values.userName.length > 39) {
+        errors.userName = 'Maximal GitHub user name length is 39 characters';
     }
     return errors;
 };
@@ -40,7 +42,6 @@ const SearchBar = props => {
             </div>
             </FormFieldset>
             {formik.errors.userName ? <FormError>{formik.errors.userName}</FormError> : null}
-            {props.fetchError ? <FormError>User {formik.values.userName} no exist! Please try another name.</FormError> : null}
         </form>
     );
 }
